@@ -1,0 +1,1 @@
+<view class="content"><image class="logo" src="/static/logo.png"></image><view class="text-area"><text class="title">{{title}}</text></view><van-toast vue-id="8dd740cc-1" id="van-toast" data-com-type="wx" bind:__l="__l"></van-toast></view>
