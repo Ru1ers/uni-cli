@@ -12868,14 +12868,115 @@ router.afterEach(function (to, from) {
 /* 69 */,
 /* 70 */,
 /* 71 */,
-/* 72 */,
-/* 73 */,
+/* 72 */
+/*!************************************************************************!*\
+  !*** D:/uni-app脚手架/uni-cli/components/mescroll-uni/mescroll-mixins.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // mescroll-body 和 mescroll-uni 通用
+
+// import MescrollUni from "./mescroll-uni.vue";
+// import MescrollBody from "./mescroll-body.vue";
+
+var MescrollMixin = {
+  // components: { // 非H5端无法通过mixin注册组件, 只能在main.js中注册全局组件或具体界面中注册
+  // 	MescrollUni,
+  // 	MescrollBody
+  // },
+  data: function data() {
+    return {
+      mescroll: null //mescroll实例对象
+    };
+  },
+  // 注册系统自带的下拉刷新 (配置down.native为true时生效, 还需在pages配置enablePullDownRefresh:true;详请参考mescroll-native的案例)
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.mescroll && this.mescroll.onPullDownRefresh();
+  },
+  // 注册列表滚动事件,用于判定在顶部可下拉刷新,在指定位置可显示隐藏回到顶部按钮 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
+  onPageScroll: function onPageScroll(e) {
+    this.mescroll && this.mescroll.onPageScroll(e);
+  },
+  // 注册滚动到底部的事件,用于上拉加载 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
+  onReachBottom: function onReachBottom() {
+    this.mescroll && this.mescroll.onReachBottom();
+  },
+  methods: {
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    mescrollInit: function mescrollInit(mescroll) {
+      this.mescroll = mescroll;
+      this.mescrollInitByRef(); // 兼容字节跳动小程序
+    },
+    // 以ref的方式初始化mescroll对象 (兼容字节跳动小程序)
+    mescrollInitByRef: function mescrollInitByRef() {
+      if (!this.mescroll || !this.mescroll.resetUpScroll) {
+        var mescrollRef = this.$refs.mescrollRef;
+        if (mescrollRef) this.mescroll = mescrollRef.mescroll;
+      }
+    },
+    // 下拉刷新的回调 (mixin默认resetUpScroll)
+    downCallback: function downCallback() {var _this = this;
+      if (this.mescroll.optUp.use) {
+        this.mescroll.resetUpScroll();
+      } else {
+        setTimeout(function () {
+          _this.mescroll.endSuccess();
+        }, 500);
+      }
+    },
+    // 上拉加载的回调
+    upCallback: function upCallback() {var _this2 = this;
+      // mixin默认延时500自动结束加载
+      setTimeout(function () {
+        _this2.mescroll.endErr();
+      }, 500);
+    } },
+
+  mounted: function mounted() {
+    this.mescrollInitByRef(); // 兼容字节跳动小程序, 避免未设置@init或@init此时未能取到ref的情况
+  } };var _default =
+
+
+
+MescrollMixin;exports.default = _default;
+
+/***/ }),
+/* 73 */
+/*!*************************************************!*\
+  !*** D:/uni-app脚手架/uni-cli/models/list/List.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getList = getList;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+// 获取模拟列表
+function getList(pageIndex) {
+  return (0, _request.default)({
+    url: '/getList',
+    method: 'post',
+    data: {
+      pageIndex: pageIndex },
+
+    headers: {
+      showLoading: true, //是否显示loading
+      showLoadingType: 'progress' //可选值:loading(loading弹窗)  progress(顶部进度条)
+    } });
+
+}
+
+/***/ }),
 /* 74 */,
 /* 75 */,
 /* 76 */,
 /* 77 */,
 /* 78 */,
-/* 79 */
+/* 79 */,
+/* 80 */,
+/* 81 */
 /*!*********************************************************************!*\
   !*** D:/uni-app脚手架/uni-cli/components/mescroll-uni/mescroll-uni.js ***!
   \*********************************************************************/
@@ -13685,7 +13786,7 @@ MeScroll.prototype.preventDefault = function (e) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 80 */
+/* 82 */
 /*!****************************************************************************!*\
   !*** D:/uni-app脚手架/uni-cli/components/mescroll-uni/mescroll-uni-option.js ***!
   \****************************************************************************/
@@ -13731,7 +13832,7 @@ var GlobalOption = {
 GlobalOption;exports.default = _default;
 
 /***/ }),
-/* 81 */
+/* 83 */
 /*!*******************************************************************!*\
   !*** D:/uni-app脚手架/uni-cli/components/mescroll-uni/wxs/mixins.js ***!
   \*******************************************************************/
@@ -13848,141 +13949,6 @@ var WxsMixin = {
 
 
 WxsMixin;exports.default = _default;
-
-/***/ }),
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */
-/*!************************************************************************!*\
-  !*** D:/uni-app脚手架/uni-cli/components/mescroll-uni/mescroll-mixins.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // mescroll-body 和 mescroll-uni 通用
-
-// import MescrollUni from "./mescroll-uni.vue";
-// import MescrollBody from "./mescroll-body.vue";
-
-var MescrollMixin = {
-  // components: { // 非H5端无法通过mixin注册组件, 只能在main.js中注册全局组件或具体界面中注册
-  // 	MescrollUni,
-  // 	MescrollBody
-  // },
-  data: function data() {
-    return {
-      mescroll: null //mescroll实例对象
-    };
-  },
-  // 注册系统自带的下拉刷新 (配置down.native为true时生效, 还需在pages配置enablePullDownRefresh:true;详请参考mescroll-native的案例)
-  onPullDownRefresh: function onPullDownRefresh() {
-    this.mescroll && this.mescroll.onPullDownRefresh();
-  },
-  // 注册列表滚动事件,用于判定在顶部可下拉刷新,在指定位置可显示隐藏回到顶部按钮 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
-  onPageScroll: function onPageScroll(e) {
-    this.mescroll && this.mescroll.onPageScroll(e);
-  },
-  // 注册滚动到底部的事件,用于上拉加载 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
-  onReachBottom: function onReachBottom() {
-    this.mescroll && this.mescroll.onReachBottom();
-  },
-  methods: {
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    mescrollInit: function mescrollInit(mescroll) {
-      this.mescroll = mescroll;
-      this.mescrollInitByRef(); // 兼容字节跳动小程序
-    },
-    // 以ref的方式初始化mescroll对象 (兼容字节跳动小程序)
-    mescrollInitByRef: function mescrollInitByRef() {
-      if (!this.mescroll || !this.mescroll.resetUpScroll) {
-        var mescrollRef = this.$refs.mescrollRef;
-        if (mescrollRef) this.mescroll = mescrollRef.mescroll;
-      }
-    },
-    // 下拉刷新的回调 (mixin默认resetUpScroll)
-    downCallback: function downCallback() {var _this = this;
-      if (this.mescroll.optUp.use) {
-        this.mescroll.resetUpScroll();
-      } else {
-        setTimeout(function () {
-          _this.mescroll.endSuccess();
-        }, 500);
-      }
-    },
-    // 上拉加载的回调
-    upCallback: function upCallback() {var _this2 = this;
-      // mixin默认延时500自动结束加载
-      setTimeout(function () {
-        _this2.mescroll.endErr();
-      }, 500);
-    } },
-
-  mounted: function mounted() {
-    this.mescrollInitByRef(); // 兼容字节跳动小程序, 避免未设置@init或@init此时未能取到ref的情况
-  } };var _default =
-
-
-
-MescrollMixin;exports.default = _default;
-
-/***/ }),
-/* 116 */,
-/* 117 */
-/*!*************************************************!*\
-  !*** D:/uni-app脚手架/uni-cli/models/list/List.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getList = getList;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-// 获取模拟列表
-function getList(pageIndex) {
-  return (0, _request.default)({
-    url: '/getList',
-    method: 'post',
-    data: {
-      pageIndex: pageIndex },
-
-    headers: {
-      showLoading: true, //是否显示loading
-      showLoadingType: 'progress' //可选值:loading(loading弹窗)  progress(顶部进度条)
-    } });
-
-}
 
 /***/ })
 ]]);

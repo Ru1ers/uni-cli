@@ -1,1 +1,0 @@
-<view class="axios-progress"><view class="{{['load-progress '+(loadProgressData!=0?'show':'hide')]}}" style="{{('top:'+CustomBar+'px;')}}"><view class="load-progress-bar bg-green" style="{{('transform: translate3d(-'+loadProgressData+'%, 0px, 0px);')}}"></view><view class="load-progress-spinner text-green"></view></view></view>
